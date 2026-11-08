@@ -1,0 +1,37 @@
+[build-system]
+requires=["setuptools>=61"]
+build-backend="setuptools.build_meta
+
+[project]
+name="tennis-code"
+version="0.1.0"
+description="A Python package to help analyze different tennis player career matches"
+readme="README.md"
+
+requires-python=">=3.9"
+dependencies= [
+    "pandas",
+    "matplotlib",
+    "requests"
+    ]
+license=
+license-files=
+classifiers= [
+    "Programming language :: Python :: 3",
+    "Operating System :: OS Independent"
+    ]
+    
+        
+keywords=["package", "tennis", "data analysis"]
+dynamic= ["version"]
+
+[project.optional-dependencies]
+dev=["pytest"]
+
+[project.urls]
+Homepage="https://github.com/UCB-stat159-f26/hw03-2-kandrachauu"
+Issues="https://github.com/UCB-stat159-f26/hw03-2-kandrachauu/issues/"
+
+[tool.setuptools.dynamic.find]
+where=["."]
+include=["tennis_code"]
