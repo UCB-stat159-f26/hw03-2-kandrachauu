@@ -40,6 +40,18 @@ def _covert_date(date):
     pd.to_DateTime(date, format='%Y%m%d', errors='coerce')
     return date
 
+def _covert_age(df,birth):
+    birth=pd.DateTime(birth)
+    df["Player's Age"]=((df['Date']-birth).dt.days/365)
+    return df
+
+
+
+#serena['Serena Age']=((serena['Date']-serenabirth).dt.days/365)
+#serena['Opponent Age']=((serena['Date'] - serena['Opponent DoB']).dt.days/365)
+
+
+#serena['Age Gap']=(serena['Serena Age'] - serena['Opponent Age'])
 
 def data_player_career(n):
     raw_data= _download_player_data(n)
@@ -47,3 +59,4 @@ def data_player_career(n):
     data= _create_df(data)
     data= _covert_date(data)
     return data
+
