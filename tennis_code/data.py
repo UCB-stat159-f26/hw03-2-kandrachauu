@@ -2,11 +2,13 @@
 import pandas as pd
 import requests
 import json
+import re
 
 def _player_names(n):
     if pd.isna(n):
         return n
-    return "".join(i.capitalize() for i in n.split())
+    else:
+        return re.sub(r"(?<=[a-z])(?=[A-Z])", " ", str(n)).title().replace(" ","")
 
 
 
@@ -37,12 +39,27 @@ def _create_df(df):
 
 
 def _covert_date(date):
-    pd.to_DateTime(date, format='%Y%m%d', errors='coerce')
+    date=pd.to_datetime(date, format='%Y%m%d', errors='coerce')
     return date
 
 def _covert_age(df,birth):
-    birth=pd.DateTime(birth)
+    birth=pd.to_datetime(birth)
     df["Player's Age"]=((df['Date']-birth).dt.days/365)
+    return df
+
+
+def _opp_age_f(df):
+    opp_birth= pd.to_datetime(df['Opponent DoB'], format="%Y%m%d",errors='coerce')
+    df["Opponent Age"]= (df['Date']-opp_birth).dt.days/365
+    return df
+
+def _age_diff(df):
+    df['Age Difference']= df["Player's Age"]-df['Opponent Age']
+    return df
+
+
+def _opp_age_m(df):
+    df["Opponent Age"]= pd.to_numeric(df['Opponent DoB'],errors='coerce')
     return df
 
 
@@ -57,6 +74,18 @@ def data_player_career(n):
     raw_data= _download_player_data(n)
     data= _convert_java(raw_data)
     data= _create_df(data)
-    data= _covert_date(data)
-    return data
+    data["Date"] = _covert_date(data["Date"])
+
+    if n.lower().replace(" ", "") == "serenawilliams":
+        data = _covert_age(data, "1981-09-26")
+        data = _opp_age_f(data)
+
+    elif n.lower().replace(" ", "") == "rafaelnadal":
+        data = _covert_age(data, "1986-06-03")
+        data = _opp_age_m(data)
+
+    else:
+        raise ValueError("Player birthday and data format not configured")
+
+    return _age_diff(data)
 
