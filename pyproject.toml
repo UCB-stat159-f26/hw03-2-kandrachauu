@@ -23,7 +23,6 @@ classifiers= [
     
         
 keywords=["package", "tennis", "data analysis"]
-dynamic= ["version"]
 
 [project.optional-dependencies]
 dev=["pytest"]
@@ -32,6 +31,6 @@ dev=["pytest"]
 Homepage="https://github.com/UCB-stat159-f26/hw03-2-kandrachauu"
 Issues="https://github.com/UCB-stat159-f26/hw03-2-kandrachauu/issues/"
 
-[tool.setuptools.dynamic.find]
+[tool.setuptools.packages.find]
 where=["."]
 include=["tennis_code"]
