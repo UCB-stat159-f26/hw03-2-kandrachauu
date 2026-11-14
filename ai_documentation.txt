@@ -1,0 +1,13 @@
+The AI tool that I used was ChatGPT, November 2026
+
+I used AI as an aid with understand different conceptual concepts and providing examples of different use cases. Additionally, when creating the functions, it helped me debug some of the scripts. I was able to draft and check the script myself but for some of the steps like testing for invalid players, I asked ChatGPT for assistance, which was a big help when helping me troubleshoot and test different concepts. 
+
+Prompts: 
+During times when I ran into errors, I would show the message and have ChatGPT guide me in troubleshooting the bug. 
+
+"Why are some of my test cases failing? The functions work"
+    -> Helped identify issues with incorrect spelling and syntax errors
+
+"Currently I am stuck on testing invalid player names without having to use the internet. What are some ways that I approach this"
+    -> Explained and provided different methods of accessing the invalid names without using the internet and making live requests.
+I ended up deciding to go with monkeypatch, as seemed to be the most straightforward and allowed me to run it offline. 
