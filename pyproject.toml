@@ -1,6 +1,6 @@
 [build-system]
 requires=["setuptools>=61"]
-build-backend="setuptools.build_meta
+build-backend="setuptools.build_meta"
 
 [project]
 name="tennis-code"
@@ -14,8 +14,8 @@ dependencies= [
     "matplotlib",
     "requests"
     ]
-license=
-license-files=
+license="MIT"
+license-files=["LICENSE"]
 classifiers= [
     "Programming language :: Python :: 3",
     "Operating System :: OS Independent"
