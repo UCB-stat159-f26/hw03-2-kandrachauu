@@ -92,12 +92,6 @@ def _get_player_birth(name, df):
     raise ValueError(f"Couldn't find birthdate for {name}")
 
 
-#serena['Serena Age']=((serena['Date']-serenabirth).dt.days/365)
-#serena['Opponent Age']=((serena['Date'] - serena['Opponent DoB']).dt.days/365)
-
-
-#serena['Age Gap']=(serena['Serena Age'] - serena['Opponent Age'])
-
 def data_player_career(n):
     raw_data = _download_player_data(n)
     data = _create_df(_convert_java(raw_data))
