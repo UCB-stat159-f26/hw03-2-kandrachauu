@@ -30,8 +30,6 @@ def _convert_java(raw):
     return pd.DataFrame(convert_str)
 
 def _create_df(df):
-#point is to take the converted df and grab the relevant details
-#We want date of match, dob of the player + all opponents + win/loss + tournament name
     data = df.rename(columns={0: "Date", 1: "Tournament", 2: "Surface", 4: "Result"
                              , 11: "Opponent", 16: "Opponent DoB"})
     data=data[['Date','Tournament','Surface','Result','Opponent','Opponent DoB']]
