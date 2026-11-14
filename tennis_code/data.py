@@ -1,4 +1,4 @@
-
+ 
 import pandas as pd
 import requests
 import json
@@ -62,6 +62,34 @@ def _opp_age_m(df):
     df["Opponent Age"]= pd.to_numeric(df['Opponent DoB'],errors='coerce')
     return df
 
+def _convert_birthdate(i):
+    value = str(i["Opponent DoB"])
+    if "." not in value:
+        return pd.to_datetime(value, format="%Y%m%d", errors="coerce")
+    match_day = pd.to_datetime(str(i["Date"]), format="%Y%m%d")
+    age = float(value)
+    birthday = match_day - pd.to_timedelta(age * 365.25, unit="D")
+    return birthday.round("D")
+
+def _grab_birthdate(name, opponent):
+    raw = _download_player_data(opponent)
+    df = _create_df(_convert_java(raw))
+    target = _player_names(name).lower()
+    names = df["Opponent"].astype(str).map(lambda x: _player_names(x).lower())
+    matches = df.loc[names == target]
+    if matches.empty:
+        return None
+    return _convert_birthdate(matches.iloc[0])
+
+def _get_player_birth(name, df):
+    for opponent in df["Opponent"].dropna().unique()[:10]:
+        try:
+            birth = _grab_birthdate(name, opponent)
+            if birth is not None and not pd.isna(birth):
+                return birth
+        except (ValueError, KeyError, requests.RequestException):
+            continue
+    raise ValueError(f"Couldn't find birthdate for {name}")
 
 
 #serena['Serena Age']=((serena['Date']-serenabirth).dt.days/365)
@@ -71,21 +99,14 @@ def _opp_age_m(df):
 #serena['Age Gap']=(serena['Serena Age'] - serena['Opponent Age'])
 
 def data_player_career(n):
-    raw_data= _download_player_data(n)
-    data= _convert_java(raw_data)
-    data= _create_df(data)
+    raw_data = _download_player_data(n)
+    data = _create_df(_convert_java(raw_data))
     data["Date"] = _covert_date(data["Date"])
-
-    if n.lower().replace(" ", "") == "serenawilliams":
-        data = _covert_age(data, "1981-09-26")
-        data = _opp_age_f(data)
-
-    elif n.lower().replace(" ", "") == "rafaelnadal":
-        data = _covert_age(data, "1986-06-03")
+    birthday = _get_player_birth(n, data)
+    data = _covert_age(data, birthday)
+    if "." in str(data["Opponent DoB"].dropna().iloc[0]):
         data = _opp_age_m(data)
-
     else:
-        raise ValueError("Player birthday and data format not configured")
-
+        data = _opp_age_f(data)
     return _age_diff(data)
 
