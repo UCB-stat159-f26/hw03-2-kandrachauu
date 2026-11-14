@@ -82,7 +82,7 @@ def _grab_birthdate(name, opponent):
     return _convert_birthdate(matches.iloc[0])
 
 def _get_player_birth(name, df):
-    for opponent in df["Opponent"].dropna().unique()[:10]:
+    for opponent in df["Opponent"].dropna().unique()[:5]:
         try:
             birth = _grab_birthdate(name, opponent)
             if birth is not None and not pd.isna(birth):
